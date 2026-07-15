@@ -192,11 +192,11 @@ export function Canvas({ boardId, initialData, onParticipantsUpdate, templatePar
         // 200 allows a small buffer above the first page
         vpt[5] = Math.min(vpt[5], 200); 
         // dynamically limit downward scroll based on actual page count
-        const maxScrollY = pageCountRef.current * 1064 * fc.getZoom();
+        const maxScrollY = (pageCountRef.current || 10) * 1064 * (fc.getZoom() || 1);
         vpt[5] = Math.max(vpt[5], -maxScrollY);
         
         // Prevent infinite scrolling left/right
-        const maxScrollX = 3000 * fc.getZoom();
+        const maxScrollX = 3000 * (fc.getZoom() || 1);
         vpt[4] = Math.max(Math.min(vpt[4], maxScrollX), -maxScrollX);
 
         fc.setViewportTransform(vpt);
@@ -221,17 +221,17 @@ export function Canvas({ boardId, initialData, onParticipantsUpdate, templatePar
     fc.on('mouse:move', function (opt) {
       if (isDragging) {
         const e = opt.e;
-        const vpt = fc.viewportTransform;
+        const vpt = fc.viewportTransform.slice();
         vpt[4] += e.clientX - lastPosX;
         vpt[5] += e.clientY - lastPosY;
 
         // Prevent infinite scrolling upwards and downwards
         vpt[5] = Math.min(vpt[5], 200); 
-        const maxScrollY = pageCountRef.current * 1064 * fc.getZoom();
+        const maxScrollY = (pageCountRef.current || 10) * 1064 * (fc.getZoom() || 1);
         vpt[5] = Math.max(vpt[5], -maxScrollY);
         
         // Prevent infinite scrolling left/right
-        const maxScrollX = 3000 * fc.getZoom();
+        const maxScrollX = 3000 * (fc.getZoom() || 1);
         vpt[4] = Math.max(Math.min(vpt[4], maxScrollX), -maxScrollX);
 
         fc.setViewportTransform(vpt);
