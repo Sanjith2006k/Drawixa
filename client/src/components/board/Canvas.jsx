@@ -176,8 +176,17 @@ export function Canvas({ boardId, initialData, onParticipantsUpdate, templatePar
       } else {
         // Pan (scroll)
         const vpt = fc.viewportTransform.slice();
-        vpt[4] -= e.deltaX; // horizontal scroll
-        vpt[5] -= e.deltaY; // vertical scroll
+        let dx = e.deltaX;
+        let dy = e.deltaY;
+        if (e.deltaMode === 1) { // Lines
+          dx *= 33;
+          dy *= 33;
+        } else if (e.deltaMode === 2) { // Pages
+          dx *= window.innerWidth;
+          dy *= window.innerHeight;
+        }
+        vpt[4] -= dx; // horizontal scroll
+        vpt[5] -= dy; // vertical scroll
         
         // Prevent infinite scrolling upwards and downwards
         // 200 allows a small buffer above the first page
