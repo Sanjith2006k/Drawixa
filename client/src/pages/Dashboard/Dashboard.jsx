@@ -25,7 +25,7 @@ export function Dashboard() {
 
   const fetchBoards = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/boards', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/boards', {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       const data = await res.json();
@@ -42,7 +42,7 @@ export function Dashboard() {
     setJoinError('');
     if (!joinCode) return;
     try {
-      const res = await fetch('http://localhost:5000/api/boards/join', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/boards/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({ partyCode: joinCode })
@@ -59,7 +59,7 @@ export function Dashboard() {
     e.stopPropagation();
     if (!confirm('Delete this board permanently?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/boards/${boardId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/boards/${boardId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${user.token}` }
       });
@@ -73,7 +73,7 @@ export function Dashboard() {
     e.preventDefault();
     setPasswordMsg('');
     try {
-      const res = await fetch(`http://localhost:5000/api/auth/change-password`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/auth/change-password`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({ oldPassword, newPassword })
@@ -100,7 +100,7 @@ export function Dashboard() {
       return;
     }
     try {
-      const res = await fetch(`http://localhost:5000/api/boards/${boardId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/boards/${boardId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({ title: editTitle })
@@ -116,7 +116,7 @@ export function Dashboard() {
 
   const handleNewBoardWithTemplate = async (templateId) => {
     try {
-      const res = await fetch('http://localhost:5000/api/boards', {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/boards', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${user.token}` },
         body: JSON.stringify({ title: `${templateId.charAt(0).toUpperCase() + templateId.slice(1)} Notes` })
