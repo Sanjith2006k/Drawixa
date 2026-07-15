@@ -22,7 +22,7 @@ export function Canvas({ boardId, initialData, onParticipantsUpdate, templatePar
 
   useEffect(() => {
     // 1. Socket.io
-    socketRef.current = io(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}');
+    socketRef.current = io(import.meta.env.VITE_API_URL || 'http://localhost:5000');
     socketRef.current.emit('join-board', { boardId, userName: user.name });
 
     socketRef.current.on('participants-update', (participants) => {
@@ -120,7 +120,7 @@ export function Canvas({ boardId, initialData, onParticipantsUpdate, templatePar
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(async () => {
           try {
-            await fetch(`${import.meta.env.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/boards/${boardId}`, {
+            await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/boards/${boardId}`, {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json',
